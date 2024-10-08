@@ -93,6 +93,7 @@ namespace Vip.Printer.Engine
             return bSuccess;
         }
 
+        
         private bool SendBytesToPrinter(string szPrinterName, byte[] data)
         {
             var pUnmanagedBytes = Marshal.AllocCoTaskMem(data.Length); // Allocate unmanaged memory
@@ -107,9 +108,26 @@ namespace Vip.Printer.Engine
 
         #region Methods
 
+        /// <summary>
+        /// Enviar comando para impressora
+        /// </summary>
+        /// <param name="printer">Impressora</param>
+        /// <param name="content">Comando</param>
+        /// <returns></returns>
         public bool Send(string printer, byte[] content)
         {
             return SendBytesToPrinter(printer, content);
+        }
+
+        /// <summary>
+        /// Busca o status da Impressora
+        /// </summary>
+        /// <param name="printer">Nome/Endereço da Impressora</param>
+        /// <param name="content">Conteudo do comando</param>
+        /// <returns></returns>
+        public byte[] GetStatus(string printer, byte[] content)
+        {
+            throw new Exception("spooler do Windows não suporta buscar o status da impressora");
         }
 
         #endregion

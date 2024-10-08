@@ -164,12 +164,24 @@ namespace Vip.Printer.Demo
         {
             switch (cboProtocolo.Text)
             {
-                case "Raw":     return ProtocolType.Raw;
-                case "Network": return ProtocolType.Network;
-                default:        return ProtocolType.Raw;
+                case "Raw":
+                    return ProtocolType.Raw;
+                case "Network":
+                    return ProtocolType.Network;
+                case "Serial":
+                    return ProtocolType.Serial;
+                default:
+                    return ProtocolType.Raw;
             }
         }
 
         #endregion
+
+        private void BtnStatusGeral_Click(object sender, EventArgs e)
+        {
+            var printer = ObterPrinter();
+            var results = printer.GetStatus();
+            TxtStatusGeral.Text = results.ToString();
+        }
     }
 }

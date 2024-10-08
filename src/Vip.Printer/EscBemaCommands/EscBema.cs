@@ -20,6 +20,22 @@ namespace Vip.Printer.EscBemaCommands
         public int ColsCondensed => 67;
         public int ColsExpanded => 25;
 
+        /// <summary>
+        /// Status da Impressão
+        /// </summary>
+        /// <returns></returns>
+        public IStatusGeneral StatusGeneral { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICoverOpen CoverOpen { get; set; }
+
+        /// <summary>
+        /// Situação do Papel
+        /// </summary>
+        public IOutOfPaper OutOfPaper { get; set; }
+
         #endregion
 
         #region Constructor
@@ -35,6 +51,9 @@ namespace Vip.Printer.EscBemaCommands
             Image = new Image();
             BarCode = new BarCode();
             InitializePrint = new InitializePrint();
+            StatusGeneral = new StatusGeneral();
+            CoverOpen = new CoverOpen();
+            OutOfPaper = new OutOfPaper();
         }
 
         #endregion
@@ -43,7 +62,7 @@ namespace Vip.Printer.EscBemaCommands
 
         public byte[] AutoTest()
         {
-            return new byte[] {0x1D, 0xF9, 0x29, 0x30};
+            return new byte[] { 0x1D, 0xF9, 0x29, 0x30 };
         }
 
         #endregion

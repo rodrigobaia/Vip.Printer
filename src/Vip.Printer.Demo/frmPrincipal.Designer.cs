@@ -52,7 +52,11 @@
             this.cboProtocolo = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.gpbColunas = new System.Windows.Forms.GroupBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.BtnStatusGeral = new System.Windows.Forms.Button();
+            this.TxtStatusGeral = new System.Windows.Forms.TextBox();
             this.gpbColunas.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnImprimirTeste
@@ -150,6 +154,7 @@
             this.txtImpressora.Name = "txtImpressora";
             this.txtImpressora.Size = new System.Drawing.Size(233, 23);
             this.txtImpressora.TabIndex = 0;
+            this.txtImpressora.Text = "192.168.1.233";
             // 
             // cboModelo
             // 
@@ -281,7 +286,8 @@
             this.cboProtocolo.FormattingEnabled = true;
             this.cboProtocolo.Items.AddRange(new object[] {
             "Raw",
-            "Network"});
+            "Network",
+            "Serial"});
             this.cboProtocolo.Location = new System.Drawing.Point(359, 33);
             this.cboProtocolo.Name = "cboProtocolo";
             this.cboProtocolo.Size = new System.Drawing.Size(94, 24);
@@ -312,10 +318,41 @@
             this.gpbColunas.TabStop = false;
             this.gpbColunas.Text = "Configuração de Colunas (Quantidade)";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.TxtStatusGeral);
+            this.groupBox1.Controls.Add(this.BtnStatusGeral);
+            this.groupBox1.Location = new System.Drawing.Point(460, 159);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(228, 194);
+            this.groupBox1.TabIndex = 18;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Status Impressora";
+            // 
+            // BtnStatusGeral
+            // 
+            this.BtnStatusGeral.Font = new System.Drawing.Font("Verdana", 8.25F);
+            this.BtnStatusGeral.Location = new System.Drawing.Point(14, 22);
+            this.BtnStatusGeral.Name = "BtnStatusGeral";
+            this.BtnStatusGeral.Size = new System.Drawing.Size(208, 44);
+            this.BtnStatusGeral.TabIndex = 6;
+            this.BtnStatusGeral.Text = "Status Geral";
+            this.BtnStatusGeral.UseVisualStyleBackColor = true;
+            this.BtnStatusGeral.Click += new System.EventHandler(this.BtnStatusGeral_Click);
+            // 
+            // TxtStatusGeral
+            // 
+            this.TxtStatusGeral.Location = new System.Drawing.Point(21, 79);
+            this.TxtStatusGeral.Multiline = true;
+            this.TxtStatusGeral.Name = "TxtStatusGeral";
+            this.TxtStatusGeral.Size = new System.Drawing.Size(201, 96);
+            this.TxtStatusGeral.TabIndex = 7;
+            // 
             // frmPrincipal
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(465, 435);
+            this.ClientSize = new System.Drawing.Size(700, 439);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.gpbColunas);
             this.Controls.Add(this.cboProtocolo);
             this.Controls.Add(this.label1);
@@ -344,6 +381,8 @@
             this.Load += new System.EventHandler(this.frmPrincipal_Load);
             this.gpbColunas.ResumeLayout(false);
             this.gpbColunas.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -375,5 +414,8 @@
         private System.Windows.Forms.ComboBox cboProtocolo;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox gpbColunas;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox TxtStatusGeral;
+        private System.Windows.Forms.Button BtnStatusGeral;
     }
 }

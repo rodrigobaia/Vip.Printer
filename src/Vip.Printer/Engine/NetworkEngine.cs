@@ -35,13 +35,21 @@ namespace Vip.Printer.Engine
             }
         }
 
+        /// <summary>
+        /// Enviar comando para impressora
+        /// </summary>
+        /// <param name="printer">Impressora</param>
+        /// <param name="content">Comando</param>
+        /// <returns></returns>
         public bool Send(string printer, byte[] content)
         {
             ConfigureEndPoint(printer);
 
             try
             {
-                using (var socket = new Socket(_endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp))
+                using (var socket = new Socket(_endPoint.AddressFamily
+                    , SocketType.Stream
+                    , ProtocolType.Tcp))
                 {
                     socket.NoDelay = true;
                     socket.Connect(_endPoint);
@@ -55,6 +63,50 @@ namespace Vip.Printer.Engine
                 return false;
             }
         }
+
+        /// <summary>
+        /// Busca o status da Impressora
+        /// </summary>
+        /// <param name="printer">Nome/Endereço da Impressora</param>
+        /// <param name="content">Conteudo do comando</param>
+        /// <returns></returns>
+        public byte[] GetStatus(string printer, byte[] content)
+        {
+            ConfigureEndPoint(printer);
+
+            try
+            {
+                using (var socket = new Socket(_endPoint.AddressFamily
+                    , SocketType.Stream
+                    , ProtocolType.Tcp))
+                {
+                    socket.NoDelay = true;
+                    socket.ReceiveTimeout = 1000; // Tempo máximo de espera por uma resposta (em milissegundos)
+                    socket.SendTimeout = 1000;    // Tempo máximo de espera para enviar o comando
+
+                    socket.Connect(_endPoint);
+
+                    // Enviar o comando para a impressora
+                    socket.Send(content);
+
+                    // Buffer para armazenar a resposta da impressora
+                    var buffer = new byte[1024];  // Tamanho do buffer depende do quanto espera receber
+                    int bytesRead = socket.Receive(buffer);
+
+                    // Redimensiona o buffer para o tamanho real dos dados recebidos
+                    var response = new byte[bytesRead];
+                    Array.Copy(buffer, response, bytesRead);
+
+                    return response;
+                }
+            }
+            catch (SocketException ex)
+            {
+                // Trate a exceção de forma apropriada (log, retry, etc.)
+                throw new Exception("Erro ao obter o status da impressora: " + ex.Message);
+            }
+        }
+
 
         #endregion
     }

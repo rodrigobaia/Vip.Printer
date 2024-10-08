@@ -44,6 +44,9 @@ using Image = System.Drawing.Image;
 
 namespace Vip.Printer
 {
+    /// <summary>
+    /// Impressora
+    /// </summary>
     public class Printer : IPrinter
     {
         #region Properties
@@ -59,9 +62,30 @@ namespace Vip.Printer
 
         #region Public properties
 
+        /// <summary>
+        /// Coluna normal
+        /// </summary>
         public int ColsNomal { get; private set; }
+
+        /// <summary>
+        /// Condensar coluna
+        /// </summary>
         public int ColsCondensed { get; private set; }
+
+        /// <summary>
+        /// Expandir coluna
+        /// </summary>
         public int ColsExpanded { get; private set; }
+
+        /// <summary>
+        /// Mensagem de erro retornando da comunicação com a impressora
+        /// </summary>
+        public string Error { get; private set; }
+
+        /// <summary>
+        /// Exception do erro
+        /// </summary>
+        public Exception Exception { get; set; }
 
         #endregion
 
@@ -77,7 +101,13 @@ namespace Vip.Printer
         /// <param name="colsExpanded">Number of columns for expanded mode print</param>
         /// <param name="encoding">Custom encoding</param>
         /// <param name="protocol">Communication procotol</param>
-        public Printer(string printerName, PrinterType type, int colsNormal, int colsCondensed, int colsExpanded, Encoding encoding, ProtocolType protocol)
+        public Printer(string printerName
+            , PrinterType type
+            , int colsNormal
+            , int colsCondensed
+            , int colsExpanded
+            , Encoding encoding
+            , ProtocolType protocol)
         {
             _printerName = string.IsNullOrEmpty(printerName) ? "temp.prn" : printerName.Trim();
             _printerType = type;
@@ -95,7 +125,12 @@ namespace Vip.Printer
         /// <param name="colsNormal">Number of columns for normal mode print</param>
         /// <param name="colsCondensed">Number of columns for condensed mode print</param>
         /// <param name="colsExpanded">Number of columns for expanded mode print</param>
-        public Printer(string printerName, PrinterType type, int colsNormal, int colsCondensed, int colsExpanded) : this(printerName, type, colsNormal, colsCondensed, colsExpanded, null, ProtocolType.Raw) { }
+        public Printer(string printerName
+            , PrinterType type
+            , int colsNormal
+            , int colsCondensed
+            , int colsExpanded)
+            : this(printerName, type, colsNormal, colsCondensed, colsExpanded, null, ProtocolType.Raw) { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Printer" /> class.
@@ -103,7 +138,10 @@ namespace Vip.Printer
         /// <param name="printerName">Printer name, shared name or port of printer install</param>
         /// <param name="type">Command set of type printer</param>
         /// <param name="encoding">Custom encoding</param>
-        public Printer(string printerName, PrinterType type, Encoding encoding) : this(printerName, type, 0, 0, 0, encoding, ProtocolType.Raw) { }
+        public Printer(string printerName
+            , PrinterType type
+            , Encoding encoding)
+            : this(printerName, type, 0, 0, 0, encoding, ProtocolType.Raw) { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Printer" /> class.
@@ -111,19 +149,29 @@ namespace Vip.Printer
         /// <param name="printerName">Printer name, shared name or port of printer install</param>
         /// <param name="type">>Command set of type printer</param>
         /// <param name="protocol">>Communication protocol</param>
-        public Printer(string printerName, PrinterType type, ProtocolType protocol) : this(printerName, type, 0, 0, 0, null, protocol) { }
+        public Printer(string printerName
+            , PrinterType type
+            , ProtocolType protocol)
+            : this(printerName, type, 0, 0, 0, null, protocol) { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Printer" /> class.
         /// </summary>
         /// <param name="printerName">Printer name, shared name or port of printer install</param>
         /// <param name="type">>Command set of type printer</param>
-        public Printer(string printerName, PrinterType type) : this(printerName, type, 0, 0, 0, null, ProtocolType.Raw) { }
+        public Printer(string printerName
+            , PrinterType type)
+            : this(printerName, type, 0, 0, 0, null, ProtocolType.Raw) { }
 
         #endregion
 
         #region Methods
 
+        /// <summary>
+        /// Imprimir documento
+        /// </summary>
+        /// <param name="copies">Nùmero de copias a ser impresso</param>
+        /// <exception cref="ArgumentException"></exception>
         public void PrintDocument(int copies = 1)
         {
             if (_buffer == null) return;
@@ -134,11 +182,19 @@ namespace Vip.Printer
                     throw new ArgumentException("Não foi possível acessar a impressora: " + _printerName);
         }
 
+        /// <summary>
+        /// Escrever com string
+        /// </summary>
+        /// <param name="value">valor a ser impresso</param>
         public void Write(string value)
         {
             WriteString(value, false);
         }
 
+        /// <summary>
+        /// Escrever em bytes
+        /// </summary>
+        /// <param name="value">Array de Bytes</param>
         public void Write(byte[] value)
         {
             if (value == null)
@@ -150,11 +206,20 @@ namespace Vip.Printer
             _buffer = list.ToArray();
         }
 
+        /// <summary>
+        /// Escrever linha a linha
+        /// </summary>
+        /// <param name="value">string a ser escrito</param>
         public void WriteLine(string value)
         {
             WriteString(value, true);
         }
 
+        /// <summary>
+        /// Escrever string
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="useLf"></param>
         private void WriteString(string value, bool useLf)
         {
             if (string.IsNullOrEmpty(value))
@@ -175,22 +240,38 @@ namespace Vip.Printer
             _buffer = list.ToArray();
         }
 
+        /// <summary>
+        /// Nova linha
+        /// </summary>
         public void NewLine()
         {
             Write("\n");
         }
 
+        /// <summary>
+        /// Número de novas linhas
+        /// </summary>
+        /// <param name="lines"></param>
         public void NewLines(int lines)
         {
             for (var i = 1; i < lines; i++)
                 NewLine();
         }
 
+        /// <summary>
+        /// Limpar o buffer de impressão
+        /// </summary>
         public void Clear()
         {
             _buffer = null;
         }
 
+        /// <summary>
+        /// Configurar colunas
+        /// </summary>
+        /// <param name="normal"></param>
+        /// <param name="condensed"></param>
+        /// <param name="expanded"></param>
         public void ConfigureCols(int normal, int condensed, int expanded)
         {
             ColsNomal = normal <= 0 ? _command.ColsNomal : normal;
@@ -198,6 +279,10 @@ namespace Vip.Printer
             ColsExpanded = expanded <= 0 ? _command.ColsExpanded : expanded;
         }
 
+        /// <summary>
+        /// Configurar Encoder
+        /// </summary>
+        /// <param name="encoding"></param>
         public void ConfigureEncoding(Encoding encoding)
         {
             _encoding = encoding;
@@ -211,13 +296,15 @@ namespace Vip.Printer
         {
             switch (type)
             {
-                case PrinterType.Epson:
-                    return new EscPos();
                 case PrinterType.Bematech:
                     return new EscBema();
+
                 case PrinterType.Daruma:
                     return new EscDaruma();
+                
+                case PrinterType.Epson:
                 default:
+
                     return new EscPos();
             }
         }
@@ -226,9 +313,14 @@ namespace Vip.Printer
         {
             switch (protocol)
             {
-                case ProtocolType.Raw:     return new RawEngine();
-                case ProtocolType.Network: return new NetworkEngine();
-                default: return new RawEngine();
+                case ProtocolType.Raw: 
+                    return new RawEngine();
+                case ProtocolType.Network: 
+                    return new NetworkEngine();
+                case ProtocolType.Serial:
+                    return new USBEngine();
+                default: 
+                    return new RawEngine();
             }
         }
 
@@ -450,12 +542,14 @@ namespace Vip.Printer
             if (!File.Exists(path))
                 throw new Exception("Image file not found");
 
-            using (var image = System.Drawing.Image.FromFile(path)) Write(_command.Image.Print(image, highDensity));
+            using (var image = System.Drawing.Image.FromFile(path)) 
+                Write(_command.Image.Print(image, highDensity));
         }
 
         public void Image(Stream stream, bool highDensity = true)
         {
-            using (var image = System.Drawing.Image.FromStream(stream)) Write(_command.Image.Print(image, highDensity));
+            using (var image = System.Drawing.Image.FromStream(stream))
+                Write(_command.Image.Print(image, highDensity));
         }
 
         public void Image(byte[] bytes, bool highDensity = true)
@@ -500,5 +594,115 @@ namespace Vip.Printer
         #endregion
 
         #endregion
+
+        #region [ Status Printer ]
+
+        /// <summary>
+        /// Buscar o Status da Impressora
+        /// </summary>
+        /// <returns></returns>
+        public StatusPrinterType GetStatus()
+        {
+            var results = GetStatusGeneral();
+
+            if (results == StatusPrinterType.Error)
+            {
+                return results;
+            }
+
+            results = GetCoverOpen();
+
+            if (results != StatusPrinterType.OK)
+            {
+                return results;
+            }
+
+            results = GetOutOfPaper();
+
+            return results;
+        }
+
+        /// <summary>
+        /// Buscar situação do papel na impressora
+        /// </summary>
+        /// <returns></returns>
+        private StatusPrinterType GetOutOfPaper()
+        {
+            try
+            {
+                StatusPrinterType statusPrinterType = StatusPrinterType.OK;
+
+                var command = _command.OutOfPaper.GetCommand();
+
+                var results = _engine.GetStatus(_printerName, command);
+
+                statusPrinterType = (results[0] & 0x60) != 0 ? StatusPrinterType.OutPaper : statusPrinterType;
+
+                return statusPrinterType;
+            }
+            catch (Exception ex)
+            {
+                Error = $"GetOutOfPaper - {ex.Message}";
+                this.Exception = ex;
+                return StatusPrinterType.Error;
+            }
+        }
+
+        /// <summary>
+        /// Verifica se a tampa esta aberta
+        /// </summary>
+        /// <returns></returns>
+        private StatusPrinterType GetCoverOpen()
+        {
+            try
+            {
+                StatusPrinterType statusPrinterType = StatusPrinterType.OK;
+
+                var command = _command.CoverOpen.GetCommand();
+
+                var results = _engine.GetStatus(_printerName, command);
+
+                statusPrinterType = (results[0] & 0x04) != 0 ? StatusPrinterType.LidOpen : statusPrinterType;
+
+                return statusPrinterType;
+            }
+            catch (Exception ex)
+            {
+                Error = $"GetCoverOpen - {ex.Message}";
+                this.Exception = ex;
+                return StatusPrinterType.Error;
+            }
+        }
+
+        /// <summary>
+        /// Verifica o status geral da impressora
+        /// </summary>
+        /// <returns></returns>
+        private StatusPrinterType GetStatusGeneral()
+        {
+            try
+            {
+                StatusPrinterType statusPrinterType = StatusPrinterType.OK;
+
+                var command = _command.StatusGeneral.GetStatus();
+
+                var results = _engine.GetStatus(_printerName, command);
+
+                statusPrinterType = (results[0] & 0x08) != 0 ? StatusPrinterType.Busy : statusPrinterType;
+
+                return statusPrinterType;
+            }
+            catch (Exception ex)
+            {
+                Error =$"GetStatusGeneral - {ex.Message}";
+                this.Exception = ex;
+                return StatusPrinterType.Error;
+            }
+            
+
+        }
+
+        #endregion [ Status Printer ]
+
     }
 }
