@@ -57,51 +57,68 @@ namespace Vip.Printer.Engine
 
         private bool SendBytesToPrinter(string szPrinterName, IntPtr pBytes, int dwCount)
         {
-            int dwError = 0, dwWritten = 0;
-            var hPrinter = new IntPtr(0);
-            var di = new DOCINFOA();
-            var bSuccess = false; // Assume failure unless you specifically succeed.
-
-            di.pDocName = "VIP RAW PrinterDocument";
-            di.pDataType = "RAW";
-
-            // Open the printer.
-            if (OpenPrinter(szPrinterName.Normalize(), out hPrinter, IntPtr.Zero))
+            try
             {
-                // Start a document.
-                if (StartDocPrinter(hPrinter, 1, di))
+                int dwError = 0, dwWritten = 0;
+                var hPrinter = new IntPtr(0);
+                var di = new DOCINFOA();
+                var bSuccess = false; // Assume failure unless you specifically succeed.
+
+                di.pDocName = "VIP RAW PrinterDocument";
+                di.pDataType = "RAW";
+
+                // Open the printer.
+                if (OpenPrinter(szPrinterName.Normalize(), out hPrinter, IntPtr.Zero))
                 {
-                    // Start a page.
-                    if (StartPagePrinter(hPrinter))
+                    // Start a document.
+                    if (StartDocPrinter(hPrinter, 1, di))
                     {
-                        // Write your bytes.
-                        bSuccess = WritePrinter(hPrinter, pBytes, dwCount, out dwWritten);
-                        EndPagePrinter(hPrinter);
+                        // Start a page.
+                        if (StartPagePrinter(hPrinter))
+                        {
+                            // Write your bytes.
+                            bSuccess = WritePrinter(hPrinter, pBytes, dwCount, out dwWritten);
+                            EndPagePrinter(hPrinter);
+                        }
+
+                        EndDocPrinter(hPrinter);
                     }
 
-                    EndDocPrinter(hPrinter);
+                    ClosePrinter(hPrinter);
                 }
 
-                ClosePrinter(hPrinter);
+                // If you did not succeed, GetLastError may give more information
+                // about why not.
+                if (bSuccess == false)
+                    dwError = Marshal.GetLastWin32Error();
+
+                return bSuccess;
             }
+            catch (Exception ex)
+            {
+                Helper.Logger.LogError(ex, $"RawEngine - SendBytesToPrinter 2. Spooler: {szPrinterName}");
 
-            // If you did not succeed, GetLastError may give more information
-            // about why not.
-            if (bSuccess == false)
-                dwError = Marshal.GetLastWin32Error();
-
-            return bSuccess;
+                return false;
+            }
         }
 
         
         private bool SendBytesToPrinter(string szPrinterName, byte[] data)
         {
-            var pUnmanagedBytes = Marshal.AllocCoTaskMem(data.Length); // Allocate unmanaged memory
-            Marshal.Copy(data, 0, pUnmanagedBytes, data.Length);       // copy bytes into unmanaged memory
-            var retval = SendBytesToPrinter(szPrinterName, pUnmanagedBytes, data.Length);
-            Marshal.FreeCoTaskMem(pUnmanagedBytes); // Free the allocated unmanaged memory
+            try
+            {
+                var pUnmanagedBytes = Marshal.AllocCoTaskMem(data.Length); // Allocate unmanaged memory
+                Marshal.Copy(data, 0, pUnmanagedBytes, data.Length);       // copy bytes into unmanaged memory
+                var retval = SendBytesToPrinter(szPrinterName, pUnmanagedBytes, data.Length);
+                Marshal.FreeCoTaskMem(pUnmanagedBytes); // Free the allocated unmanaged memory
 
-            return retval;
+                return retval;
+            }
+            catch (Exception ex)
+            {
+                Helper.Logger.LogError(ex, $"RawEngine - SendBytesToPrinter 1. Spooler: {szPrinterName}");
+                return false;
+            }
         }
 
         #endregion

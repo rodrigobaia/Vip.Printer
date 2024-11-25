@@ -53,8 +53,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.gpbColunas = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.BtnStatusGeral = new System.Windows.Forms.Button();
             this.TxtStatusGeral = new System.Windows.Forms.TextBox();
+            this.BtnStatusGeral = new System.Windows.Forms.Button();
+            this.TxtLog = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.gpbColunas.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -329,6 +331,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Status Impressora";
             // 
+            // TxtStatusGeral
+            // 
+            this.TxtStatusGeral.Location = new System.Drawing.Point(21, 79);
+            this.TxtStatusGeral.Multiline = true;
+            this.TxtStatusGeral.Name = "TxtStatusGeral";
+            this.TxtStatusGeral.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.TxtStatusGeral.Size = new System.Drawing.Size(201, 96);
+            this.TxtStatusGeral.TabIndex = 7;
+            // 
             // BtnStatusGeral
             // 
             this.BtnStatusGeral.Font = new System.Drawing.Font("Verdana", 8.25F);
@@ -340,18 +351,31 @@
             this.BtnStatusGeral.UseVisualStyleBackColor = true;
             this.BtnStatusGeral.Click += new System.EventHandler(this.BtnStatusGeral_Click);
             // 
-            // TxtStatusGeral
+            // TxtLog
             // 
-            this.TxtStatusGeral.Location = new System.Drawing.Point(21, 79);
-            this.TxtStatusGeral.Multiline = true;
-            this.TxtStatusGeral.Name = "TxtStatusGeral";
-            this.TxtStatusGeral.Size = new System.Drawing.Size(201, 96);
-            this.TxtStatusGeral.TabIndex = 7;
+            this.TxtLog.Location = new System.Drawing.Point(20, 457);
+            this.TxtLog.Multiline = true;
+            this.TxtLog.Name = "TxtLog";
+            this.TxtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.TxtLog.Size = new System.Drawing.Size(668, 96);
+            this.TxtLog.TabIndex = 8;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(19, 439);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(27, 15);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Log";
             // 
             // frmPrincipal
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(700, 439);
+            this.ClientSize = new System.Drawing.Size(700, 565);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.TxtLog);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.gpbColunas);
             this.Controls.Add(this.cboProtocolo);
@@ -417,5 +441,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox TxtStatusGeral;
         private System.Windows.Forms.Button BtnStatusGeral;
+        private System.Windows.Forms.TextBox TxtLog;
+        private System.Windows.Forms.Label label2;
     }
 }

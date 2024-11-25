@@ -5,12 +5,13 @@
 		<Company>VIP Soluções</Company>
 		<Copyright>Copyright © 2019-2022</Copyright>
 		<Authors>Leandro Ferreira</Authors>
-		<Version>3.0.0</Version>
+		<Version>3.0.1</Version>
 		<Tags>vip printer escpos escbema escdaruma posprinter</Tags>
 		<PackageProjectUrl>https://github.com/leandrovip/Vip.Printer</PackageProjectUrl>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	</PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="PDVFlow.ManagerLog" Version="4.5.4.2" />
 		<PackageReference Include="System.Drawing.Common">
 			<Version>6.0.0</Version>
 		</PackageReference>

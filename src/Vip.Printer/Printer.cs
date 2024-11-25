@@ -178,8 +178,14 @@ namespace Vip.Printer
             if (copies <= 0) copies = 1;
 
             for (var i = 0; i < copies; i++)
+            {
                 if (!_engine.Send(_printerName, _buffer))
-                    throw new ArgumentException("Não foi possível acessar a impressora: " + _printerName);
+                {
+                    Helper.Logger.LogWarning($"PrintDocument- Não foi possível acessar a impressora: {_printerName}");
+                    throw new Exception("Não foi possível acessar a impressora: " + _printerName);
+
+                }
+            }
         }
 
         /// <summary>

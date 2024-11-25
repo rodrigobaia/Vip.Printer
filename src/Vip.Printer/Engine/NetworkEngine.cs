@@ -29,8 +29,9 @@ namespace Vip.Printer.Engine
             {
                 _endPoint = new IPEndPoint(IPAddress.Parse(address), port);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Helper.Logger.LogError(ex, $"NetworkEngine - ConfigureEndPoint IP: {printer}");
                 throw new ArgumentException($"Endereço de IP ({address}) inválido ou não encontrado");
             }
         }
@@ -58,8 +59,9 @@ namespace Vip.Printer.Engine
 
                 return true;
             }
-            catch
+            catch(Exception ex)
             {
+                Helper.Logger.LogError(ex, $"Send: Falha ao imprimir na impressora de IP: {printer}");
                 return false;
             }
         }
@@ -102,7 +104,7 @@ namespace Vip.Printer.Engine
             }
             catch (SocketException ex)
             {
-                // Trate a exceção de forma apropriada (log, retry, etc.)
+                Helper.Logger.LogError(ex, $"GetStatus - {printer}");
                 throw new Exception("Erro ao obter o status da impressora: " + ex.Message);
             }
         }
